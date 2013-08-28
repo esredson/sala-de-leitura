@@ -1,0 +1,1 @@
+{"id":"${autor.id}","nome":"${autor.nome}"}
