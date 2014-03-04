@@ -6,6 +6,9 @@
     version="2.4">
 
     <display-name>Sala de Leitura</display-name>
+    <welcome-file-list>
+    	<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
     <description>
         This is a simple web application with a source code organization
         based on the recommendations of the Application Developer's Guide.
@@ -23,6 +26,30 @@
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
         <url-pattern>/autor/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/genero/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/genero</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/aluno/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/aluno</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/turma/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/turma</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -26,6 +26,10 @@ public class Dao {
 		return o;
 	}
 	
+	public Object porId(Class clazz, Long id){
+		return session.load(clazz, id);
+	}
+	
 	public void excluir(Long id, Class clazz){
 		Object o = session.load(clazz, id);
 		session.delete(o);

@@ -14,11 +14,11 @@
     		jTabela = $('#tabela'),
     		jMensagem = $("#mensagem");   
     	
-    	$("#link_autores").css("color","white");
+    	$("#link_generos").css("color","white");
     	
     	var incluir = function(nome){
     		$.ajax({
-    			url: "./autor/incluir",
+    			url: "./genero/incluir",
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
 				data: {'nome': nome },
@@ -31,11 +31,11 @@
     	var incluiuComSucesso = function(nome, id){
     		jModal.dialog( "close" );
     		jTabela.dataTable().fnAddData([nome, id]);			
-    		msg("Autor incluído com sucesso");
+    		msg("Gênero incluído com sucesso");
     	}
     	
 		var alterar = function(nome, id){
-			$.getJSON("./autor/alterar",{"nome":nome, "id":id}, function(result){
+			$.getJSON("./genero/alterar",{"nome":nome, "id":id}, function(result){
 				alterouComSucesso(result.nome, result.id);
 			});
     	};
@@ -43,18 +43,18 @@
     	var alterouComSucesso = function(nome, id){
     		jModal.dialog( "close" );
     		jTabela.dataTable().fnUpdate([nome, id], $("#"+id)[0]);			
-    		msg("Autor alterado com sucesso");
+    		msg("Gênero alterado com sucesso");
     	}
     	
 		var excluir = function(id){
-    		$.getJSON("./autor/excluir",{"id":id}, function(result){
+    		$.getJSON("./genero/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
     		});
     	};
     	
     	var excluiuComSucesso = function(id){
     		jTabela.dataTable().fnDeleteRow($("#"+id)[0]);
-    		msg("Autor exclu�do com sucesso");
+    		msg("Gênero exclu�do com sucesso");
     	}
            
     	jBotaoIncluir
@@ -143,10 +143,10 @@
 				jnRow.attr('id', id);
 			},
 			"aaData": [
-			<c:forEach var="autor" items="${autores}">
+			<c:forEach var="genero" items="${generos}">
 				{
-					"0": "${autor.nome}",
-					"1": "${autor.id}"
+					"0": "${genero.nome}",
+					"1": "${genero.id}"
 				},
 			</c:forEach>
 			],
@@ -185,9 +185,9 @@
 		
     </script>
     
-    <div style="padding-left: 30pt; padding-top: 20pt; position: fixed; top: 100pt; left: 150pt; height: 100%; width: 100%;">
+	<div style="padding-left: 30pt; padding-top: 20pt; position: fixed; top: 100pt; left: 150pt; height: 100%; width: 100%;">
 	
-    <button id="incluir">Novo autor</button>
+    <button id="incluir">Novo gênero</button>
 	<div id="mensagem" class="ui-state-highlight ui-corner-all" style=" margin-top: 0px; padding: 0 .7em; display: inline-block; position: absolute; left: 200px; top: 10px; ">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		<span id="cerne"></span></p>
@@ -212,7 +212,7 @@
     </table>
     </div>
 	
-    <div id="modal" title="Novo Autor"> 
+    <div id="modal" title="Novo Gênero"> 
 		<!--<p class="validateTips">Campo obrigat�rio</p>-->
   		<form>
   			<fieldset>

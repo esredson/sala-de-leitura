@@ -13,9 +13,9 @@ public class Autor {
 
     @Id
     @GeneratedValue
-    public Long id;
+    private Long id;
     
-    public String nome;
+    private String nome;
 
 	public Long getId() {
 		return id;

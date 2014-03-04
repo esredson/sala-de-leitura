@@ -1,6 +1,9 @@
 package control.persist;
 
+import model.Aluno;
 import model.Autor;
+import model.Genero;
+import model.Turma;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.SessionFactoryObserver;
@@ -38,7 +41,11 @@ public class HibernateUtil {
 				
 			});
 
+			
 			cf.addAnnotatedClass(Autor.class);
+			cf.addAnnotatedClass(Genero.class);
+			cf.addAnnotatedClass(Aluno.class);
+			cf.addAnnotatedClass(Turma.class);
 
 			factory = cf.buildSessionFactory(registry);
 		}

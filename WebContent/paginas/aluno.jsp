@@ -12,49 +12,49 @@
     	var	jBotaoIncluir = $("#incluir"),
     		jModal = $("#modal"),
     		jTabela = $('#tabela'),
-    		jMensagem = $("#mensagem");   
+    		jMensagem = $("#mensagem");    		
     	
-    	$("#link_autores").css("color","white");
+    	$("#link_alunos").css("color","white");
     	
-    	var incluir = function(nome){
+    	var incluir = function(id, nome, matricula, turma){
     		$.ajax({
-    			url: "./autor/incluir",
+    			url: "./aluno/incluir",
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
-				data: {'nome': nome },
+				data: {'nome': nome, 'matricula':matricula, "turma": turma.id},
 				success: function(result){
-					incluiuComSucesso(result.nome, result.id);
+					incluiuComSucesso(result.id, result.nome, result.matricula, result.turma);
 				}
 			});
     	};
     	
-    	var incluiuComSucesso = function(nome, id){
+    	var incluiuComSucesso = function(id, nome, matricula, turma){
     		jModal.dialog( "close" );
-    		jTabela.dataTable().fnAddData([nome, id]);			
-    		msg("Autor incluído com sucesso");
+    		jTabela.dataTable().fnAddData([id, nome, matricula, turma.id, turma.nome]);			
+    		msg("Aluno incluído com sucesso");
     	}
     	
-		var alterar = function(nome, id){
-			$.getJSON("./autor/alterar",{"nome":nome, "id":id}, function(result){
-				alterouComSucesso(result.nome, result.id);
+		var alterar = function(id, nome, matricula, turma){
+			$.getJSON("./aluno/alterar",{"nome":nome, "id":id, "matricula":matricula, "turma":turma.id}, function(result){
+				alterouComSucesso(result.id, result.nome, result.matricula, result.turma);
 			});
     	};
     	
-    	var alterouComSucesso = function(nome, id){
+    	var alterouComSucesso = function(id, nome, matricula, turma){
     		jModal.dialog( "close" );
-    		jTabela.dataTable().fnUpdate([nome, id], $("#"+id)[0]);			
-    		msg("Autor alterado com sucesso");
+    		jTabela.dataTable().fnUpdate([id, nome, matricula, turma.id, turma.nome], $("#"+id)[0]);			
+    		msg("Aluno alterado com sucesso");
     	}
     	
 		var excluir = function(id){
-    		$.getJSON("./autor/excluir",{"id":id}, function(result){
+    		$.getJSON("./aluno/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
     		});
     	};
     	
     	var excluiuComSucesso = function(id){
     		jTabela.dataTable().fnDeleteRow($("#"+id)[0]);
-    		msg("Autor exclu�do com sucesso");
+    		msg("Aluno excluído com sucesso");
     	}
            
     	jBotaoIncluir
@@ -71,24 +71,31 @@
       		modal: true,
       		open: function(){
 					$("#nome").val(jModal.data('nome'));
+					$("#matricula").val(jModal.data('matricula'));
 					$("#id").val(jModal.data('id'));
+					$("#turma").val(jModal.data('turma'));
 			},
 			close: function() {
         		var allFields = $( [] ).add($("#nome"));
 				allFields.val("").removeClass( "ui-state-error" );
 				jModal.data('nome', '');
 				jModal.data('id', '');
+				jModal.data('matricula', '');
+				jModal.data('turma', '');
       		},
       		buttons: {
        			"Ok": function() {
 					var acao = jModal.data('acao'),
-						nome = $("#nome"), id = $("#id");
+						nome = $("#nome"), 
+						id = $("#id"),
+						matricula = $("#matricula"),
+						turma = $("#turma option:selected");
 					if (nome.val().length == 0){	
 						nome.addClass( "ui-state-error" );
 						//$( ".validateTips" ).addClass( "ui-state-highlight" );
 						return;
 					}
-					acao(nome.val(), id.val());
+					acao(id.val(), nome.val(), matricula.val(), {"id": turma.val(), "nome": turma.text()});
           		},
         		"Cancelar": function() {
           			jModal.dialog( "close" );
@@ -119,8 +126,10 @@
     			}
     		}, 
 			"fnCreatedRow": function( nRow, aData, iDataIndex ) {
-				var nome = this.fnGetData(nRow)[0];
-				var id = this.fnGetData(nRow)[1];
+				var id = this.fnGetData(nRow)[0];
+				var nome = this.fnGetData(nRow)[1];
+				var matricula = this.fnGetData(nRow)[2];
+				var turma = this.fnGetData(nRow)[3];
 				var jnRow = $(nRow);
 				var divIcones = jnRow.find("[name = 'icones']");
          		divIcones.append("&nbsp;&nbsp;<span title=\"Editar\" style=\"display: inline-block; visibility:hidden; cursor: pointer\" class=\"ui-state-default ui-corner-all ui-icon ui-icon-pencil\"></span>");
@@ -129,6 +138,8 @@
 					jModal.data('acao', alterar)
 		    		.data('nome', nome)
 		    		.data('id', id)
+		    		.data('matricula', matricula)
+		    		.data('turma', turma)
 		    		.dialog("open");
 				});
 				divIcones.find("span:eq(1)").click(function(){
@@ -143,23 +154,36 @@
 				jnRow.attr('id', id);
 			},
 			"aaData": [
-			<c:forEach var="autor" items="${autores}">
+			<c:forEach var="aluno" items="${alunos}">
 				{
-					"0": "${autor.nome}",
-					"1": "${autor.id}"
+					"0": "${aluno.id}",
+					"1": "${aluno.nome}",
+					"2": "${aluno.matricula}",
+					"3": "${aluno.turma.id}",
+					"4": "${aluno.turma.nome}"
 				},
 			</c:forEach>
 			],
 			"aoColumnDefs": [
-				{
-				"mRender": function ( data, type, row ) {
-					return data + "<div name='icones' style='display: inline-block'></div>";
+				{ 
+					"bVisible": false, 
+					"aTargets": [ 0 ] 
 				},
-					"aTargets": [ 0 ]
+				{
+					"mRender": function ( data, type, row ) {
+						return data + "<div name='icones' style='display: inline-block'></div>";
+					},
+					"aTargets": [ 1 ]
+				},
+				{  
+					"aTargets": [ 2 ] 
 				},
 				{ 
 					"bVisible": false, 
-					"aTargets": [ 1 ] 
+					"aTargets": [ 3 ] 
+				},
+				{  
+					"aTargets": [ 4 ] 
 				}
 			]	
         } );
@@ -185,9 +209,9 @@
 		
     </script>
     
-    <div style="padding-left: 30pt; padding-top: 20pt; position: fixed; top: 100pt; left: 150pt; height: 100%; width: 100%;">
+	<div style="padding-left: 30pt; padding-top: 20pt; position: fixed; top: 100pt; left: 150pt; height: 100%; width: 100%;">
 	
-    <button id="incluir">Novo autor</button>
+    <button id="incluir">Novo aluno</button>
 	<div id="mensagem" class="ui-state-highlight ui-corner-all" style=" margin-top: 0px; padding: 0 .7em; display: inline-block; position: absolute; left: 200px; top: 10px; ">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		<span id="cerne"></span></p>
@@ -197,8 +221,11 @@
     <table id="tabela">
     	<thead>
     		<tr>
+    			<th></th>
     			<th>Nome</th>
-				<th></th>
+    			<th>Matrícula</th>
+    			<th></th>
+    			<th>Turma</th>
     		</tr>
     	</thead>
     	<tbody>
@@ -212,12 +239,20 @@
     </table>
     </div>
 	
-    <div id="modal" title="Novo Autor"> 
+    <div id="modal" title="Novo Aluno"> 
 		<!--<p class="validateTips">Campo obrigat�rio</p>-->
   		<form>
   			<fieldset>
    				<label for="nome">Nome</label>
     			<input type="text" name="nome" id="nome" class="text ui-widget-content ui-corner-all" />
+    			<label for="matricula">Matrícula</label>
+    			<input type="text" name="matricula" id="matricula" class="text ui-widget-content ui-corner-all" />
+				<label for="turma">Turma</label>
+				<select name="turma" id="turma" >
+					<c:forEach var="turma" items="${turmas}">
+						<option value="${turma.id}">${turma.nome}</option>
+					</c:forEach>
+				</select>
 				<input type="hidden" name="id" id="id" />
   			</fieldset>
   		</form>

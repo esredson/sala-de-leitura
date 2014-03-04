@@ -1,15 +1,26 @@
 
-Terminar alterar e excluir
-Fazer o mesmo pra Genero e aluno
-Exemplar, com suas complicações
-Localizações
-Empréstimos
-Encoding está voltando errado
-Posições evitar que os objetos saiam da posição ao mostrar mensagem e ao mostrar ícones
-possibilitar teclar Enter
-Colocar diálogo de inclusão num jsp separado
-organizar código, evitando repetição
-exceções vão acontecer. Tratar e mostrar mensagem por ajax.
-Stopping thread http-bio-8080-exec-7 to avoid potential memory leaks after a context was stopped.
-Por que, na função do getJson, não está sendo possível chamar $(this).data()?
-Indicador "Carregando" ao salvar
+Funcionalidades
+	aluno com seleção da turma
+	Exemplar, com suas complicações
+	Empréstimos
+	Relatórios
+	Login
+	Produção
+
+Internos:
+	Depois que altera, não fica mais com o botão de editar
+	Resolver encoding
+	Retornar exceção
+	possibilitar teclar Enter
+	Indicador "Carregando" ao salvar
+	trocar url de aluno para alunos, etc
+	por que, buscando c traz o zezinho?
+	--------
+	acabar com repetições; organizar tudo
+	Por que tá paty-livros-servlet?
+	Não popular a tabela por html, mas sim por json
+	Não deveria o web.xml precisar declarar duas vezes a url (/yyy e /yyy/)
+	extrair o nome do método no servlet por regex e reflection
+	substituir alterar e inluir, no servlt, por salvar
+	criar meu css, pra organizar
+	Mavenizar

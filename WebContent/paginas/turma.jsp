@@ -12,13 +12,13 @@
     	var	jBotaoIncluir = $("#incluir"),
     		jModal = $("#modal"),
     		jTabela = $('#tabela'),
-    		jMensagem = $("#mensagem");   
+    		jMensagem = $("#mensagem");    		
     	
-    	$("#link_autores").css("color","white");
+    	$("#link_turmas").css("color","white");
     	
     	var incluir = function(nome){
     		$.ajax({
-    			url: "./autor/incluir",
+    			url: "./turma/incluir",
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
 				data: {'nome': nome },
@@ -31,11 +31,11 @@
     	var incluiuComSucesso = function(nome, id){
     		jModal.dialog( "close" );
     		jTabela.dataTable().fnAddData([nome, id]);			
-    		msg("Autor incluído com sucesso");
+    		msg("Turma incluída com sucesso");
     	}
     	
 		var alterar = function(nome, id){
-			$.getJSON("./autor/alterar",{"nome":nome, "id":id}, function(result){
+			$.getJSON("./turma/alterar",{"nome":nome, "id":id}, function(result){
 				alterouComSucesso(result.nome, result.id);
 			});
     	};
@@ -43,18 +43,18 @@
     	var alterouComSucesso = function(nome, id){
     		jModal.dialog( "close" );
     		jTabela.dataTable().fnUpdate([nome, id], $("#"+id)[0]);			
-    		msg("Autor alterado com sucesso");
+    		msg("Turma alterada com sucesso");
     	}
     	
 		var excluir = function(id){
-    		$.getJSON("./autor/excluir",{"id":id}, function(result){
+    		$.getJSON("./turma/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
     		});
     	};
     	
     	var excluiuComSucesso = function(id){
     		jTabela.dataTable().fnDeleteRow($("#"+id)[0]);
-    		msg("Autor exclu�do com sucesso");
+    		msg("Turma excluída com sucesso");
     	}
            
     	jBotaoIncluir
@@ -143,18 +143,18 @@
 				jnRow.attr('id', id);
 			},
 			"aaData": [
-			<c:forEach var="autor" items="${autores}">
+			<c:forEach var="turma" items="${turmas}">
 				{
-					"0": "${autor.nome}",
-					"1": "${autor.id}"
+					"0": "${turma.nome}",
+					"1": "${turma.id}"
 				},
 			</c:forEach>
 			],
 			"aoColumnDefs": [
 				{
-				"mRender": function ( data, type, row ) {
-					return data + "<div name='icones' style='display: inline-block'></div>";
-				},
+					"mRender": function ( data, type, row ) {
+						return data + "<div name='icones' style='display: inline-block'></div>";
+					},
 					"aTargets": [ 0 ]
 				},
 				{ 
@@ -185,9 +185,9 @@
 		
     </script>
     
-    <div style="padding-left: 30pt; padding-top: 20pt; position: fixed; top: 100pt; left: 150pt; height: 100%; width: 100%;">
+	<div style="padding-left: 30pt; padding-top: 20pt; position: fixed; top: 100pt; left: 150pt; height: 100%; width: 100%;">
 	
-    <button id="incluir">Novo autor</button>
+    <button id="incluir">Nova turma</button>
 	<div id="mensagem" class="ui-state-highlight ui-corner-all" style=" margin-top: 0px; padding: 0 .7em; display: inline-block; position: absolute; left: 200px; top: 10px; ">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		<span id="cerne"></span></p>
@@ -198,7 +198,7 @@
     	<thead>
     		<tr>
     			<th>Nome</th>
-				<th></th>
+    			<th></th>
     		</tr>
     	</thead>
     	<tbody>
@@ -212,7 +212,7 @@
     </table>
     </div>
 	
-    <div id="modal" title="Novo Autor"> 
+    <div id="modal" title="Nova turma"> 
 		<!--<p class="validateTips">Campo obrigat�rio</p>-->
   		<form>
   			<fieldset>
