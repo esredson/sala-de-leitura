@@ -21,7 +21,7 @@
 
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
-        <url-pattern>/autor</url-pattern>
+        <url-pattern>/autores</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
@@ -33,7 +33,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
-        <url-pattern>/genero</url-pattern>
+        <url-pattern>/generos</url-pattern>
     </servlet-mapping>
         <servlet-mapping>
         <servlet-name>principal</servlet-name>
@@ -41,7 +41,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
-        <url-pattern>/aluno</url-pattern>
+        <url-pattern>/alunos</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
@@ -49,7 +49,34 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>principal</servlet-name>
-        <url-pattern>/turma</url-pattern>
+        <url-pattern>/turmas</url-pattern>
     </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/livro/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/livros</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/emprestimo/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>principal</servlet-name>
+        <url-pattern>/emprestimos</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+   	 <filter-name>HibernateFilter</filter-name>
+	    <filter-class>
+        	control.Filter
+    	</filter-class>
+		</filter>
+	<filter-mapping>
+	    <filter-name>HibernateFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 </web-app>

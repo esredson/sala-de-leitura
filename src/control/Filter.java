@@ -1,30 +1,31 @@
 package control;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.Transaction;
+import org.hibernate.Session;
+
+import control.persist.HibernateUtil;
+import control.persist.Modelo;
 
 public class Filter implements javax.servlet.Filter {
 
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
-
-		HttpServletRequest request = (HttpServletRequest) req;
-
-		// Get the IP address of client machine.
-		String ipAddress = request.getRemoteAddr();
-
-		// Log the IP address and current timestamp.
-		System.out.println("IP " + ipAddress + ", Time "
-				+ new Date().toString());
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Modelo.setSessao(session);
+		Transaction transaction = session.beginTransaction();
 		
 		chain.doFilter(req, res);
+		
+		transaction.commit();
 	}
 
 	public void init(FilterConfig config) throws ServletException {

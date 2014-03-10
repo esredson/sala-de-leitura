@@ -2,7 +2,10 @@ package control.persist;
 
 import model.Aluno;
 import model.Autor;
+import model.Emprestimo;
+import model.Exemplar;
 import model.Genero;
+import model.Livro;
 import model.Turma;
 
 import org.hibernate.SessionFactory;
@@ -46,6 +49,9 @@ public class HibernateUtil {
 			cf.addAnnotatedClass(Genero.class);
 			cf.addAnnotatedClass(Aluno.class);
 			cf.addAnnotatedClass(Turma.class);
+			cf.addAnnotatedClass(Livro.class);
+			cf.addAnnotatedClass(Exemplar.class);
+			cf.addAnnotatedClass(Emprestimo.class);
 
 			factory = cf.buildSessionFactory(registry);
 		}

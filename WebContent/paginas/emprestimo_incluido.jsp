@@ -1,0 +1,1 @@
+{"id":"${emprestimo.id}","retirada":"${emprestimo.retiradaDDMMYYYY}", "devolucao":"${emprestimo.devolucaoDDMMYYYY}", "aluno":{"id":"${emprestimo.aluno.id}","resumo":"${emprestimo.aluno.resumo}"}, "exemplar":{"id":"${emprestimo.exemplar.id}","resumo":"${emprestimo.exemplar.resumo}"}}

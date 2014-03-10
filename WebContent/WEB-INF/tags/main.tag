@@ -16,9 +16,9 @@
 		
 		<style>
 			body {background: rgb(255, 253, 192);}
-			label, input { display:block; }
-   			input.text { margin-bottom:12px; width:95%; padding: .4em; }
-    		fieldset { padding:0; border:0; margin-top:25px; }
+			fieldset>label, fieldset>input { display:block; }
+   			fieldset>input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    		form>fieldset { padding:0; border:0; margin-top:25px; }
 			table.dataTable tr.even { background-color: #eacd86 !important; }
 			table.dataTable tr.odd { background-color: #efec9f !important; }
 			table.dataTable tr.even td.sorting_1 { background-color: #eacd86 !important; }
@@ -45,13 +45,13 @@
 		<div id="accordion" >
   			<h3>Consultas</h3>
   			<div>
-  			 	<h4 align="right"><a id="link_emprestimos" href="#" style="text-decoration: none">Empréstimos</a></h4>
-  			 	<h4 align="right"><a id="link_localizacoes" href="#" style="text-decoration: none">Localizações</a></h4>
-  			 	<h4 align="right"><a id="link_livros" href="#" style="text-decoration: none">Livros</a></h4>
-  			 	<h4 align="right"><a id="link_autores" href="./autor" style="text-decoration: none;">Autores</a></h4>
-  			 	<h4 align="right"><a id="link_generos" href="./genero" style="text-decoration: none">Gêneros</a></h4>
-  			 	<h4 align="right"><a id="link_alunos" href="./aluno" style="text-decoration: none">Alunos</a></h4>
-  			 	<h4 align="right"><a id="link_turmas" href="./turma" style="text-decoration: none">Turmas</a></h4>
+  			 	<h4 align="right"><a id="link_emprestimos" href="./emprestimos" style="text-decoration: none">Empréstimos</a></h4>
+  			 	<!-- <h4 align="right"><a id="link_localizacoes" href="#" style="text-decoration: none">Localizações</a></h4> -->
+  			 	<h4 align="right"><a id="link_livros" href="./livros" style="text-decoration: none">Livros</a></h4>
+  			 	<h4 align="right"><a id="link_autores" href="./autores" style="text-decoration: none;">Autores</a></h4>
+  			 	<h4 align="right"><a id="link_generos" href="./generos" style="text-decoration: none">Gêneros</a></h4>
+  			 	<h4 align="right"><a id="link_alunos" href="./alunos" style="text-decoration: none">Alunos</a></h4>
+  			 	<h4 align="right"><a id="link_turmas" href="./turmas" style="text-decoration: none">Turmas</a></h4>
   			</div>
   			<h3>Gráficos</h3>
   			<div>

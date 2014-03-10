@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/tags/main.tag=UTF-8
-encoding//WebContent/paginas/autor.jsp=UTF-8
 encoding//WebContent/paginas/autor_excluido.jsp=UTF-8
 encoding//WebContent/paginas/autor_incluido.jsp=UTF-8
-encoding//WebContent/paginas/turma.jsp=UTF-8
+encoding//WebContent/paginas/autores.jsp=UTF-8
+encoding//WebContent/paginas/turmas.jsp=UTF-8

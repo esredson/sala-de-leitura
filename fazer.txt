@@ -1,21 +1,20 @@
 
-Funcionalidades
-	aluno com seleção da turma
-	Exemplar, com suas complicações
 	Empréstimos
-	Relatórios
-	Login
+		não tá funcionando ok da alteração do emprestimo
+		deveria mostrar pra escolha só os exemplares não emprestados (considerar meia noite, etc)
+		definir número de exemplares na edição de livro
+	acentuação - encoding; autocomplete
+	estilo dos campos autocomplete e select
+	Login, telas, cookie, etc
+	Depois que altera, não fica mais com o botão de editar
+	deixar tabelas mais largas, pra linhas sempre terem o mesmo tamanho
+	Retornar exceção
 	Produção
 
-Internos:
-	Depois que altera, não fica mais com o botão de editar
-	Resolver encoding
-	Retornar exceção
+Depois:
 	possibilitar teclar Enter
 	Indicador "Carregando" ao salvar
-	trocar url de aluno para alunos, etc
 	por que, buscando c traz o zezinho?
-	--------
 	acabar com repetições; organizar tudo
 	Por que tá paty-livros-servlet?
 	Não popular a tabela por html, mas sim por json
@@ -24,3 +23,5 @@ Internos:
 	substituir alterar e inluir, no servlt, por salvar
 	criar meu css, pra organizar
 	Mavenizar
+	melhorar chamada ao todos() e porId(); nao depender de instancia
+	trabalhar com session e transaction do jpa em vez de do hb
