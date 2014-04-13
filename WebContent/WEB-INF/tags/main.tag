@@ -64,6 +64,31 @@
  			</div>
 		</div>
 	</div>
+	<div style="display:none" id="mensagemErro">
+		<p>
+		<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+		<span id="conteudo"></span>
+    	</p>
+	</div>
+	<script>
+		$("#mensagemErro").dialog({
+    		title: "Erro",
+    		resizable: false,
+    		height: 180,
+    		modal: true,
+    		autoOpen: false,
+    		buttons: {
+        		"Ok" : function () {
+		            $(this).dialog("close");
+        		}
+    		}
+		});
+		
+		function msgErro(txt){
+    		$("#mensagemErro").dialog("open");
+    		$("#mensagemErro").find("p > #conteudo").html(txt);
+    	}
+	</script>
 	<jsp:doBody/>
     </body>
 </html>   

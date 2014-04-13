@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import control.persist.Modelo;
 
@@ -56,32 +58,57 @@ public class Livro extends Modelo<Livro> {
 	}
 
 	@Override
-	public void salvar() {
+	public void salvar() throws Exception{
+		long numJaExistentes = getNumExemplares();
+		if (numJaExistentes == 0)
+			salvar(1);
+		else
+			salvar(numJaExistentes);
+	}
+
+	public void salvar(long exemplaresASalvar) throws Exception{
 		super.salvar();
-		if (getExemplares().size() == 0) {
-			Exemplar exemplar = new Exemplar();
-			exemplar.setLivro(this);
-			exemplar.salvar();
-			setExemplares(Arrays.asList(new Exemplar[] { exemplar }));
+		int numJaExistentes = getNumExemplares();
+		if (exemplaresASalvar <= 0)
+			exemplaresASalvar = 1;
+		if (exemplaresASalvar < numJaExistentes) {
+			for (int i = numJaExistentes - 1; i >= exemplaresASalvar; i--) {
+				getExemplares().get(i).excluir();
+				//getExemplares().remove(i);
+			}
+		} else if (exemplaresASalvar > numJaExistentes) {
+			for (int i = 0; i < exemplaresASalvar - numJaExistentes; i++) {
+				Exemplar exemplar = new Exemplar();
+				exemplar.setLivro(this);
+				exemplar.salvar();
+				getExemplares().add(exemplar);
+			}
 		}
 	}
 
 	public List<Exemplar> getExemplares() {
-		return exemplares != null ? exemplares : new ArrayList<Exemplar>();
+		if (exemplares == null)
+			exemplares = new ArrayList<Exemplar>();
+		return exemplares;
 	}
 
 	public void setExemplares(List<Exemplar> exemplares) {
 		this.exemplares = exemplares;
 	}
+	
+	public int getNumExemplares(){
+		return getExemplares().size();
+	}
 
 	public String getStatus() {
 		int nExemplares = 0;
 		String nExemplaresString = "";
-		nExemplares = getExemplares().size();
-		nExemplaresString = nExemplares + (nExemplares == 1 ? " exemplar; " : " exemplares; ");
-			
+		nExemplares = getNumExemplares();
+		nExemplaresString = nExemplares
+				+ (nExemplares == 1 ? " exemplar; " : " exemplares; ");
+
 		int nEmprestados = 0;
-		String nEmprestadosString = "";	
+		String nEmprestadosString = "";
 		for (Exemplar e : getExemplares())
 			if (e.isEmprestado())
 				nEmprestados++;
@@ -91,7 +118,7 @@ public class Livro extends Modelo<Livro> {
 			nEmprestadosString = "1 emprestado";
 		else
 			nEmprestadosString = nEmprestados + " emprestados";
-		
+
 		return nExemplaresString + nEmprestadosString;
 	}
 }

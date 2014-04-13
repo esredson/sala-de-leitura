@@ -24,6 +24,9 @@
 				data: {"aluno": aluno.id, "exemplar": exemplar.id, "retirada": retirada, "devolucao": devolucao},
 				success: function(result){
 					incluiuComSucesso(result.id, result.exemplar, result.aluno, result.retirada, result.devolucao);
+				},
+				error: function(xhRequest, ErrorText, thrownError){
+					msgErro(xhRequest.responseText);
 				}
 			});
     	};
@@ -35,21 +38,25 @@
     	};
     	
 		var alterar = function(id, exemplar, aluno, retirada, devolucao){
-			$.getJSON("./emprestimo/alterar",{"aluno": aluno.id, "exemplar": exemplar.id, "retirada": retirada, "devolucao": devolucao}, function(result){
+			$.getJSON("./emprestimo/alterar",{"id": id, "aluno": aluno.id, "exemplar": exemplar.id, "retirada": retirada, "devolucao": devolucao}, function(result){
 				alterouComSucesso(result.id, result.exemplar, result.aluno, result.retirada, result.devolucao);
+			}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
 			});
     	};
     	
     	var alterouComSucesso = function(id, exemplar, aluno, retirada, devolucao){
     		jModal.dialog( "close" );
-    		jTabela.dataTable().fnUpdate([id, exemplar.id, exemplar.resumo, aluno.id, aluno.nome, retirada, devolucao], $("#"+id)[0]);			
+    		jTabela.dataTable().fnUpdate([id, exemplar.id, exemplar.resumo, aluno.id, aluno.resumo, retirada, devolucao], $("#"+id)[0]);			
     		msg("Emprestimo alterado com sucesso");
     	}
     	
 		var excluir = function(id){
     		$.getJSON("./emprestimo/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
-    		});
+    		}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
+			});
     	};
     	
     	var excluiuComSucesso = function(id){
@@ -114,7 +121,7 @@
     	var exemplar_id = null;
     	var exemplar_raw = [
 			//<c:forEach var="exemplar" items="${exemplares}">
-			{id: "${exemplar.id}", value: "${exemplar.livro.nome}", label: "${exemplar.resumo}"},
+			{id: "${exemplar.id}", value: "${exemplar.resumo}", label: "${exemplar.resumo}"},
 			//</c:forEach>
 		];
     	var exemplar_source  = [ ];
@@ -142,7 +149,7 @@
     	var aluno_id = null;
     	var aluno_raw = [
 			//<c:forEach var="aluno" items="${alunos}">
-			{id: "${aluno.id}", value: "${aluno.nome}", label: "${aluno.resumo}"},
+			{id: "${aluno.id}", value: "${aluno.resumo}", label: "${aluno.resumo}"},
 			//</c:forEach>
 		];
     	var aluno_source  = [ ];
@@ -322,9 +329,9 @@
   		<form>
   			<fieldset>
 				<label for="exemplar">Livro</label>
-				<input name="exemplar" id="exemplar" type="text" />
+				<input name="exemplar" id="exemplar" type="text" class="text ui-widget-content ui-corner-all" />
 				<label for="aluno">Aluno</label>
-				<input name="aluno" id="aluno" type="text" />
+				<input name="aluno" id="aluno" type="text" class="text ui-widget-content ui-corner-all" />
 				<label for="retirada">Retirada</label>
     			<input type="text" name="retirada" id="retirada" class="text ui-widget-content ui-corner-all" />
     			<label for="devolucao">Devolução</label>

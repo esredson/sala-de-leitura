@@ -1,22 +1,24 @@
 
-	Empréstimos
-		não tá funcionando ok da alteração do emprestimo
-		deveria mostrar pra escolha só os exemplares não emprestados (considerar meia noite, etc)
-		definir número de exemplares na edição de livro
-	acentuação - encoding; autocomplete
-	estilo dos campos autocomplete e select
-	Login, telas, cookie, etc
-	Depois que altera, não fica mais com o botão de editar
+	mensagem de emprestimo incluído mais pra direita, tamanho dos campos na dialog de incluir emprestimo
 	deixar tabelas mais largas, pra linhas sempre terem o mesmo tamanho
-	Retornar exceção
-	Produção
+	Depois que altera, não fica mais com o botão de editar
+	acentuação - encoding; autocomplete
+	Colocar no Google
+	Login, telas, cookie, etc
 
 Depois:
 	possibilitar teclar Enter
+	deveria mostrar pra escolha só os exemplares não emprestados (considerar meia noite, etc)
+		parei porque deu erro:
+		deveria recarregar a lista de exemplares disponíveis para emprestimo, na dialog, quando um empréstimo fosse alterado
+		deveria haver um emprestimo.exemplaresSelecionaveis em vez de um static
+	mais proteção. 1 - exibir erro antes do request de campos vazios
+	mais proteção. 2 - não deixar cadastrar empréstimo se houver overlap, explicando direito se for alteração
 	Indicador "Carregando" ao salvar
 	por que, buscando c traz o zezinho?
 	acabar com repetições; organizar tudo
 	Por que tá paty-livros-servlet?
+	fazer com que a exclusão passe a setar uma flag, exibindo apenas uma mensagem de confirmação quando tiver children
 	Não popular a tabela por html, mas sim por json
 	Não deveria o web.xml precisar declarar duas vezes a url (/yyy e /yyy/)
 	extrair o nome do método no servlet por regex e reflection

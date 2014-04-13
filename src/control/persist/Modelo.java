@@ -46,7 +46,7 @@ public class Modelo<T extends Modelo> {
 		return (T) session.get().load(this.getClass(), getId());
 	}
 	
-	public void salvar(){
+	public void salvar() throws Exception{
 		session.get().saveOrUpdate(this);
 	}
 	

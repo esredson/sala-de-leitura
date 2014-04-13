@@ -24,6 +24,9 @@
 				data: {'nome': nome },
 				success: function(result){
 					incluiuComSucesso(result.nome, result.id);
+				},
+				error: function(xhRequest, ErrorText, thrownError){
+					msgErro(xhRequest.responseText);
 				}
 			});
     	};
@@ -37,6 +40,8 @@
 		var alterar = function(nome, id){
 			$.getJSON("./autor/alterar",{"nome":nome, "id":id}, function(result){
 				alterouComSucesso(result.nome, result.id);
+			}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
 			});
     	};
     	
@@ -49,7 +54,9 @@
 		var excluir = function(id){
     		$.getJSON("./autor/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
-    		});
+    		}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
+			});
     	};
     	
     	var excluiuComSucesso = function(id){

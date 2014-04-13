@@ -20,12 +20,14 @@ public class Exemplar extends Modelo<Exemplar> {
 
 	@ManyToOne
 	private Livro livro;
-	
+
 	@OneToMany(mappedBy = "exemplar", cascade = CascadeType.REMOVE)
 	private List<Emprestimo> emprestimos;
 
 	public List<Emprestimo> getEmprestimos() {
-		return emprestimos != null ? emprestimos : new ArrayList<Emprestimo>();
+		if (emprestimos == null)
+			emprestimos = new ArrayList<Emprestimo>();
+		return emprestimos;
 	}
 
 	public void setEmprestimos(List<Emprestimo> emprestimos) {
@@ -49,10 +51,10 @@ public class Exemplar extends Modelo<Exemplar> {
 	}
 
 	@Override
-	public void salvar() {
+	public void salvar() throws Exception{
 		if (getSequencial() == null)
 			setSequencial((long) getLivro().getExemplares().size() + 1);
-		
+
 		super.salvar();
 	}
 
@@ -61,13 +63,14 @@ public class Exemplar extends Modelo<Exemplar> {
 		super.excluir();
 		getLivro().getExemplares().remove(this);
 	}
-	
-	public String getResumo(){
-		return getLivro().getNome() + " #" + sequencial;
+
+	public String getResumo() {
+		return getLivro().getNome()
+				+ (getLivro().getNumExemplares() > 1 ? " #" + sequencial : "");
 	}
-	
-	public boolean isEmprestado(){
-		for (Emprestimo e : getEmprestimos()){
+
+	public boolean isEmprestado() {
+		for (Emprestimo e : getEmprestimos()) {
 			if (e.getDevolucao() == null || e.getDevolucao().after(new Date()))
 				return true;
 		}

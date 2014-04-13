@@ -1,7 +1,9 @@
 package model;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -60,12 +62,27 @@ public class Emprestimo extends Modelo<Emprestimo> {
 			return "";
 		}
 	}
-	
+
 	public String getDevolucaoDDMMYYYY() {
 		try {
 			return new SimpleDateFormat("dd/MM/yyyy").format(getDevolucao());
 		} catch (Exception e) {
 			return "";
+		}
+	}
+
+	@Override
+	public void salvar() throws Exception{
+		if (getRetirada() == null)
+			throw new Exception("Data de retirada não pode ser nula");
+		if (getDevolucao() != null && getDevolucao().before(getRetirada()))
+			throw new Exception("Data de devolução não pode ser anterior à de retirada");
+		if (getExemplar().isEmprestado())
+			throw new Exception("O exemplar selecionado não está disponível");
+		super.salvar();
+		List<Emprestimo> emprestimosDoExemplar = getExemplar().getEmprestimos();
+		if (!emprestimosDoExemplar.contains(this)) {
+			emprestimosDoExemplar.add(this);
 		}
 	}
 

@@ -24,6 +24,9 @@
 				data: {'nome': nome, 'matricula':matricula, "turma": turma.id},
 				success: function(result){
 					incluiuComSucesso(result.id, result.nome, result.matricula, result.turma);
+				},
+				error: function(xhRequest, ErrorText, thrownError){
+					msgErro(xhRequest.responseText);
 				}
 			});
     	};
@@ -37,6 +40,8 @@
 		var alterar = function(id, nome, matricula, turma){
 			$.getJSON("./aluno/alterar",{"nome":nome, "id":id, "matricula":matricula, "turma":turma.id}, function(result){
 				alterouComSucesso(result.id, result.nome, result.matricula, result.turma);
+			}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
 			});
     	};
     	
@@ -49,7 +54,9 @@
 		var excluir = function(id){
     		$.getJSON("./aluno/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
-    		});
+    		}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
+			});
     	};
     	
     	var excluiuComSucesso = function(id){
@@ -248,7 +255,7 @@
     			<label for="matricula">Matrícula</label>
     			<input type="text" name="matricula" id="matricula" class="text ui-widget-content ui-corner-all" />
 				<label for="turma">Turma</label>
-				<select name="turma" id="turma" >
+				<select name="turma" id="turma" class="text ui-widget-content ui-corner-all">
 					<c:forEach var="turma" items="${turmas}">
 						<option value="${turma.id}">${turma.nome}</option>
 					</c:forEach>

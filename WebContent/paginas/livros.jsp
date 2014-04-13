@@ -16,40 +16,47 @@
     	
     	$("#link_livros").css("color","white");
     	
-    	var incluir = function(id, nome, autor, genero){
+    	var incluir = function(id, nome, autor, genero, exemplares){
     		$.ajax({
     			url: "./livro/incluir",
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
-				data: {'nome': nome, "autor": autor.id, "genero": genero.id},
+				data: {'nome': nome, "autor": autor.id, "genero": genero.id, "exemplares": exemplares},
 				success: function(result){
-					incluiuComSucesso(result.id, result.nome, result.autor, result.genero, result.status);
+					incluiuComSucesso(result.id, result.nome, result.autor, result.genero, result.status, result.exemplares);
+				},
+				error: function(xhRequest, ErrorText, thrownError){
+					msgErro(xhRequest.responseText);
 				}
 			});
     	};
     	
-    	var incluiuComSucesso = function(id, nome, autor, genero, status){
+    	var incluiuComSucesso = function(id, nome, autor, genero, status, exemplares){
     		jModal.dialog( "close" );
-    		jTabela.dataTable().fnAddData([id, nome, autor.id, autor.nome, genero.id, genero.nome, status]);			
+    		jTabela.dataTable().fnAddData([id, nome, autor.id, autor.nome, genero.id, genero.nome, status, exemplares]);			
     		msg("Livro incluído com sucesso");
     	};
     	
-		var alterar = function(id, nome, autor, genero){
-			$.getJSON("./livro/alterar",{"nome":nome, "id":id, "autor": autor.id, "genero": genero.id}, function(result){
-				alterouComSucesso(result.id, result.nome, result.autor, result.genero, result.status);
+		var alterar = function(id, nome, autor, genero, exemplares){
+			$.getJSON("./livro/alterar",{"nome":nome, "id":id, "autor": autor.id, "genero": genero.id, "exemplares": exemplares}, function(result){
+				alterouComSucesso(result.id, result.nome, result.autor, result.genero, result.status, result.exemplares);
+			}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
 			});
     	};
     	
-    	var alterouComSucesso = function(id, nome, autor, genero, status){
+    	var alterouComSucesso = function(id, nome, autor, genero, status, exemplares){
     		jModal.dialog( "close" );
-    		jTabela.dataTable().fnUpdate([id, nome, autor.id, autor.nome, genero.id, genero.nome, status], $("#"+id)[0]);			
+    		jTabela.dataTable().fnUpdate([id, nome, autor.id, autor.nome, genero.id, genero.nome, status, exemplares], $("#"+id)[0]);			
     		msg("Livro alterado com sucesso");
     	}
     	
 		var excluir = function(id){
     		$.getJSON("./livro/excluir",{"id":id}, function(result){
     			excluiuComSucesso([result.id]);
-    		});
+    		}).fail(function(xhRequest, ErrorText, thrownError){
+				msgErro(xhRequest.responseText);
+			});
     	};
     	
     	var excluiuComSucesso = function(id){
@@ -75,6 +82,7 @@
 					autor_id = jModal.data('autor');
 					$("#autor").val(invertMapping[autor_id]);
 					$("#genero").val(jModal.data('genero'));
+					$("#exemplares").val(jModal.data('exemplares'));
 			},
 			close: function() {
         		var allFields = $( [] ).add($("#nome"));
@@ -83,11 +91,13 @@
 				jModal.data('id', '');
 				jModal.data('autor', '');
 				jModal.data('genero', '');
+				jModal.data('exemplares', '1');
       		},
       		buttons: {
        			"Ok": function() {
 					var acao = jModal.data('acao'),
-						nome = $("#nome"), 
+						nome = $("#nome"),
+						exemplares = $("#exemplares"), 
 						id = $("#id"),
 						autor = $("#autor"),
 						genero = $("#genero option:selected");
@@ -96,7 +106,7 @@
 						//$( ".validateTips" ).addClass( "ui-state-highlight" );
 						return;
 					}
-					acao(id.val(), nome.val(), {"id": autor_id, "nome": autor.val()}, {"id": genero.val(), "nome": genero.text()});
+					acao(id.val(), nome.val(), {"id": autor_id, "nome": autor.val()}, {"id": genero.val(), "nome": genero.text()}, exemplares.val());
           		},
         		"Cancelar": function() {
           			jModal.dialog( "close" );
@@ -158,6 +168,7 @@
 				var nome = this.fnGetData(nRow)[1];
 				var autor = this.fnGetData(nRow)[2];
 				var genero = this.fnGetData(nRow)[4];
+				var exemplares = this.fnGetData(nRow)[7];
 				var jnRow = $(nRow);
 				var divIcones = jnRow.find("[name = 'icones']");
          		divIcones.append("&nbsp;&nbsp;<span title=\"Editar\" style=\"display: inline-block; visibility:hidden; cursor: pointer\" class=\"ui-state-default ui-corner-all ui-icon ui-icon-pencil\"></span>");
@@ -168,6 +179,7 @@
 		    		.data('id', id)
 		    		.data('autor', autor)
 		    		.data('genero', genero)
+		    		.data('exemplares', exemplares)
 		    		.dialog("open");
 				});
 				divIcones.find("span:eq(1)").click(function(){
@@ -190,7 +202,8 @@
 					"3": "${livro.autor.nome}",
 					"4": "${livro.genero.id}",
 					"5": "${livro.genero.nome}",
-					"6": "${livro.status}"
+					"6": "${livro.status}",
+					"7": "${livro.numExemplares}"
 				},
 			</c:forEach>
 			],
@@ -221,6 +234,10 @@
 				},
 				{ 
 					"aTargets": [ 6 ] 
+				},
+				{ 
+					"bVisible": false, 
+					"aTargets": [ 7 ] 
 				}
 			]	
         } );
@@ -265,6 +282,7 @@
     			<th></th>
     			<th>Genero</th>
     			<th>Status</th>
+    			<th></th>
     			
     		</tr>
     	</thead>
@@ -286,13 +304,15 @@
    				<label for="nome">Nome</label>
     			<input type="text" name="nome" id="nome" class="text ui-widget-content ui-corner-all" />
 				<label for="autor">Autor</label>
-				<input name="autor" id="autor" type="text" />
+				<input name="autor" id="autor" type="text" class="text ui-widget-content ui-corner-all" />
 				<label for="genero">Genero</label>
-				<select name="genero" id="genero" >
+				<select name="genero" id="genero" class="text ui-widget-content ui-corner-all" style="margin-bottom: 12px" >
 					<c:forEach var="genero" items="${generos}">
 						<option value="${genero.id}">${genero.nome}</option>
 					</c:forEach>
 				</select>
+				<label for="exemplares">Quantidade de Exemplares</label>
+				<input name="exemplares" id="exemplares" type="number" class="text ui-widget-content ui-corner-all" />
 				<input type="hidden" name="id" id="id" />
   			</fieldset>
   		</form>
